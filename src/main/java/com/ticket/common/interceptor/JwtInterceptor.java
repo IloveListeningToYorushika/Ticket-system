@@ -25,6 +25,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         if (token == null || !token.startsWith("Bearer ")) {
             response.setStatus(401);
+            // TODO：报错信息要写清楚
             return false;
         }
 
@@ -39,6 +40,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         try {
             Claims claims = jwtUtil.getClaimsByToken(token);
+            // TODO：没有讨论解析失败的情况，可能是因为token过期了
             request.setAttribute("userId", Long.valueOf(claims.getSubject()));
             return true;
         } catch (Exception e) {

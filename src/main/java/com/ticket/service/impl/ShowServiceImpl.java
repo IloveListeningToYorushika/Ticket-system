@@ -43,6 +43,7 @@ public class ShowServiceImpl extends ServiceImpl<ShowMapper, Show> implements Sh
         queryWrapper.eq("city", city).eq("status", 1); // 已开票的演出
 
         Page<Show> resultPage = showMapper.selectPage(showPage, queryWrapper);
+        // TODO：所有从数据库中查询的数据都需要先判空
 
         Page<ShowListVO> voPage = new Page<>(page, size);
         List<ShowListVO> voList = resultPage.getRecords().stream().map(show -> {
@@ -75,6 +76,7 @@ public class ShowServiceImpl extends ServiceImpl<ShowMapper, Show> implements Sh
     public ShowDetailVO getShowDetail(Long id) {
         Show show = showMapper.selectById(id);
         if (show == null) {
+            // TODO:应该要报错throw new exception
             return null;
         }
 

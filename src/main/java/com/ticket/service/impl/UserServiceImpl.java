@@ -19,6 +19,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
+    // TODO：工具类不应该作为依赖注入，而是静态工具类
     @Autowired
     private JwtUtil jwtUtil;
 

@@ -17,7 +17,9 @@ public class UserController {
      * 获取当前用户信息
      */
     @GetMapping("/info")
+    // TODO:线程上下文ThreadLocal
     public Result getUserInfo(@RequestAttribute("userId") Long userId) {
+        // TODO：直接返回User是否有安全问题，构建对应DTO
         return Result.success(userService.getUserById(userId));
     }
 
