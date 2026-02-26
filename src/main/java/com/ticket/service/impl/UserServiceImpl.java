@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ticket.common.Result;
 import com.ticket.common.utils.JwtUtil;
 import com.ticket.dto.LoginRequest;
+import com.ticket.dto.UserInfoDTO;
 import com.ticket.entity.User;
 import com.ticket.mapper.UserMapper;
 import com.ticket.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +21,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
-    // TODO：工具类不应该作为依赖注入，而是静态工具类
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -79,7 +80,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public void updateUserInfo(User user) {
+    public UserInfoDTO getUserInfoDTO(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        BeanUtils.copyProperties(user, userInfoDTO);
+        // 不复制密码等敏感信息
+        return userInfoDTO;
+    }
+
+    @Override
+    public void updateUserInfo(Long userId, UserInfoDTO userInfoDTO) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        // 只更新允许修改的字段
+        user.setNickname(userInfoDTO.getNickname());
+        user.setEmail(userInfoDTO.getEmail());
+        user.setPhone(userInfoDTO.getPhone());
+        user.setAvatar(userInfoDTO.getAvatar());
+
         userMapper.updateById(user);
     }
 }

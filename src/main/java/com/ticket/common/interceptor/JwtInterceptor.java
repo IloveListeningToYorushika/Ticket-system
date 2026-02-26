@@ -25,7 +25,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         if (token == null || !token.startsWith("Bearer ")) {
             response.setStatus(401);
-            // TODO：报错信息要写清楚
+            response.getWriter().write("{\"code\": 401, \"message\": \"未提供有效的认证令牌\"}");
             return false;
         }
 
@@ -35,16 +35,17 @@ public class JwtInterceptor implements HandlerInterceptor {
         String userId = (String) redisTemplate.opsForValue().get("TOKEN_" + token);
         if (userId == null) {
             response.setStatus(401);
+            response.getWriter().write("{\"code\": 401, \"message\": \"令牌已过期或无效\"}");
             return false;
         }
 
         try {
             Claims claims = jwtUtil.getClaimsByToken(token);
-            // TODO：没有讨论解析失败的情况，可能是因为token过期了
             request.setAttribute("userId", Long.valueOf(claims.getSubject()));
             return true;
         } catch (Exception e) {
             response.setStatus(401);
+            response.getWriter().write("{\"code\": 401, \"message\": \"令牌解析失败: " + e.getMessage() + "\"}");
             return false;
         }
     }

@@ -6,9 +6,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("user")
+@TableName("user")//对应数据库里的user表
 public class User {
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)//实体自己的主键ID（用户ID），唯一标识的一个用户
     private Long id;
 
     private String username;

@@ -8,3 +8,5 @@ import lombok.Data;
 public class OrderDetailVO extends Order {
     private TicketType ticketType;
 }
+
+//该类用于接口参数和返回结果的封装
