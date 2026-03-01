@@ -1,4 +1,4 @@
-package com.ticket.common.utils;
+package com.ticket.common.context;
 
 /**
  * 用户上下文工具类，使用ThreadLocal存储当前用户信息
