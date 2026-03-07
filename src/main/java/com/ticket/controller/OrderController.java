@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ticket.common.Result;
 import com.ticket.common.utils.UserContext;
 import com.ticket.dto.OrderCancelDTO;
+import com.ticket.dto.OrderCreateDTO;
 import com.ticket.dto.OrderListDTO;
+import com.ticket.entity.Order;
 import com.ticket.service.OrderService;
-import com.ticket.vo.OrderDetailVo;
+import com.ticket.vo.OrderDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,6 @@ public class OrderController {
 
     /**
      * 分页查询订单列表
-     * 使用UserContext获取用户ID，返回精简的DTO
      */
     @GetMapping("/list")
     public Result<Page<OrderListDTO>> getOrderList(@RequestParam(defaultValue = "1") Integer page,
@@ -33,20 +34,22 @@ public class OrderController {
 
     /**
      * 获取订单详情
-     * 使用UserContext获取用户ID
      */
     @GetMapping("/{id}")
-    public Result<OrderDetailVo> getOrderDetail(@PathVariable Long id) {
+    public Result<OrderDetailVO> getOrderDetail(@PathVariable Long id) {
         Long userId = UserContext.getUserId();
         if (userId == null) {
             return Result.error("用户未登录");
         }
-        return Result.success(orderService.getOrderDetail(userId, id));
+        try {
+            return Result.success(orderService.getOrderDetail(userId, id));
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
      * 取消订单
-     * 使用UserContext获取用户ID
      */
     @PutMapping("/{id}/cancel")
     public Result cancelOrder(@PathVariable Long id) {
@@ -54,13 +57,16 @@ public class OrderController {
         if (userId == null) {
             return Result.error("用户未登录");
         }
-        orderService.cancelOrder(userId, id);
-        return Result.success();
+        try {
+            orderService.cancelOrder(userId, id);
+            return Result.success();
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
      * 取消订单（返回详细信息）
-     * 满足会议纪要中提到的用户体验需求
      */
     @PutMapping("/{id}/cancel-detail")
     public Result<OrderCancelDTO> cancelOrderWithDetail(@PathVariable Long id) {
@@ -68,6 +74,43 @@ public class OrderController {
         if (userId == null) {
             return Result.error("用户未登录");
         }
-        return Result.success(orderService.cancelOrderWithDetail(userId, id));
+        try {
+            return Result.success(orderService.cancelOrderWithDetail(userId, id));
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 创建订单
+     */
+    @PostMapping("/create")
+    public Result<Order> createOrder(@RequestBody OrderCreateDTO orderCreateDTO) {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error("用户未登录");
+        }
+        try {
+            return Result.success(orderService.createOrder(userId, orderCreateDTO));
+        } catch (IllegalArgumentException | RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 支付订单
+     */
+    @PostMapping("/pay")
+    public Result payOrder(@RequestParam String orderNo, @RequestParam String payOrderNo) {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error("用户未登录");
+        }
+        try {
+            orderService.payOrder(userId, orderNo, payOrderNo);
+            return Result.success();
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
     }
 }

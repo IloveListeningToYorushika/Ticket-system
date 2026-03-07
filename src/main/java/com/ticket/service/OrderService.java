@@ -3,9 +3,10 @@ package com.ticket.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ticket.dto.OrderCancelDTO;
+import com.ticket.dto.OrderCreateDTO;
 import com.ticket.dto.OrderListDTO;
 import com.ticket.entity.Order;
-import com.ticket.vo.OrderDetailVo;
+import com.ticket.vo.OrderDetailVO;
 
 public interface OrderService extends IService<Order> {
 
@@ -13,9 +14,13 @@ public interface OrderService extends IService<Order> {
 
     Page<OrderListDTO> getOrderListDTO(Long userId, Integer page, Integer size);
 
-    OrderDetailVo getOrderDetail(Long userId, Long orderId);
+    OrderDetailVO getOrderDetail(Long userId, Long orderId);
 
     void cancelOrder(Long userId, Long orderId);
 
     OrderCancelDTO cancelOrderWithDetail(Long userId, Long orderId);
+
+    Order createOrder(Long userId, OrderCreateDTO orderCreateDTO);
+
+    void payOrder(Long userId, String orderNo, String payOrderNo);
 }

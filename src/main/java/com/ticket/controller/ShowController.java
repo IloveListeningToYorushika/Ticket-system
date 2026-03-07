@@ -1,8 +1,11 @@
 package com.ticket.controller;
 
 import com.ticket.common.Result;
+import com.ticket.common.utils.UserContext;
 import com.ticket.entity.Show;
 import com.ticket.service.ShowService;
+import com.ticket.vo.ShowDetailVO;
+import com.ticket.vo.ShowListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,29 +20,41 @@ public class ShowController {
      * 首页获取地区与分类演出列表
      */
     @GetMapping("/list")
-    public Result getShowList(@RequestParam(defaultValue = "北京") String city,
-                              @RequestParam(defaultValue = "") String category,
-                              @RequestParam(defaultValue = "1") Integer page,
-                              @RequestParam(defaultValue = "10") Integer size,
-                              @RequestAttribute(required = false, value = "userId") Long userId) {
-        return Result.success(showService.getShowList(city, category, page, size, userId));
+    public Result<Page<ShowListVO>> getShowList(@RequestParam(defaultValue = "北京") String city,
+                                                @RequestParam(required = false, defaultValue = "") String category,
+                                                @RequestParam(defaultValue = "1") Integer page,
+                                                @RequestParam(defaultValue = "10") Integer size) {
+        try {
+            Long userId = UserContext.getUserId();
+            return Result.success(showService.getShowList(city, category, page, size, userId));
+        } catch (IllegalArgumentException e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
      * 搜索演出
      */
     @GetMapping("/search")
-    public Result searchShows(@RequestParam String keyword,
-                              @RequestParam(defaultValue = "1") Integer page,
-                              @RequestParam(defaultValue = "10") Integer size) {
-        return Result.success(showService.searchShows(keyword, page, size));
+    public Result<Page<Show>> searchShows(@RequestParam String keyword,
+                                          @RequestParam(defaultValue = "1") Integer page,
+                                          @RequestParam(defaultValue = "10") Integer size) {
+        try {
+            return Result.success(showService.searchShows(keyword, page, size));
+        } catch (IllegalArgumentException e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
      * 获取演出详情
      */
     @GetMapping("/{id}")
-    public Result getShowDetail(@PathVariable Long id) {
-        return Result.success(showService.getShowDetail(id));
+    public Result<ShowDetailVO> getShowDetail(@PathVariable Long id) {
+        try {
+            return Result.success(showService.getShowDetail(id));
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
+        }
     }
 }
