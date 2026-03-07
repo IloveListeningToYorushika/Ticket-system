@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 订单详情 VO
  */
 @Data
-public class OrderDetailVO {
+public class OrderDetailVo {
     private Long id;
     private String orderNo;
     private Long userId;

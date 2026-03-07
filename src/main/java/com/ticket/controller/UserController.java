@@ -1,7 +1,7 @@
 package com.ticket.controller;
 
 import com.ticket.common.Result;
-import com.ticket.common.utils.UserContext;
+import com.ticket.common.context.UserContext;
 import com.ticket.dto.UserInfoDTO;
 import com.ticket.entity.User;
 import com.ticket.service.UserService;

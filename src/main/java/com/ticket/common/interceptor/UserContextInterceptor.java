@@ -1,6 +1,6 @@
 package com.ticket.common.interceptor;
 
-import com.ticket.common.utils.UserContext;
+import com.ticket.common.context.UserContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

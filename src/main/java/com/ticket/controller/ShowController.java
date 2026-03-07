@@ -1,13 +1,14 @@
 package com.ticket.controller;
 
 import com.ticket.common.Result;
-import com.ticket.common.utils.UserContext;
+import com.ticket.common.context.UserContext;
 import com.ticket.entity.Show;
 import com.ticket.service.ShowService;
 import com.ticket.vo.ShowDetailVO;
 import com.ticket.vo.ShowListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 @RestController
 @RequestMapping("/api/show")

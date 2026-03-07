@@ -2,7 +2,7 @@ package com.ticket.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ticket.common.Result;
-import com.ticket.common.utils.UserContext;
+import com.ticket.common.context.UserContext;
 import com.ticket.dto.OrderCancelDTO;
 import com.ticket.dto.OrderCreateDTO;
 import com.ticket.dto.OrderListDTO;
