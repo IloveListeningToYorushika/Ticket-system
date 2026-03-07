@@ -6,7 +6,7 @@ import com.ticket.common.utils.UserContext;
 import com.ticket.dto.OrderCancelDTO;
 import com.ticket.dto.OrderListDTO;
 import com.ticket.service.OrderService;
-import com.ticket.vo.OrderDetailVO;
+import com.ticket.vo.OrderDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +36,7 @@ public class OrderController {
      * 使用UserContext获取用户ID
      */
     @GetMapping("/{id}")
-    public Result<OrderDetailVO> getOrderDetail(@PathVariable Long id) {
+    public Result<OrderDetailVo> getOrderDetail(@PathVariable Long id) {
         Long userId = UserContext.getUserId();
         if (userId == null) {
             return Result.error("用户未登录");

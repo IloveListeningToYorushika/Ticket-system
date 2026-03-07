@@ -14,7 +14,7 @@ import com.ticket.mapper.SessionMapper;
 import com.ticket.mapper.ShowMapper;
 import com.ticket.mapper.TicketTypeMapper;
 import com.ticket.service.OrderService;
-import com.ticket.vo.OrderDetailVO;
+import com.ticket.vo.OrderDetailVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public OrderDetailVO getOrderDetail(Long userId, Long orderId) {
+    public OrderDetailVo getOrderDetail(Long userId, Long orderId) {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
             throw new RuntimeException("订单不存在");
@@ -96,7 +96,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new RuntimeException("无权查看此订单");
         }
 
-        OrderDetailVO orderDetailVO = new OrderDetailVO();
+        OrderDetailVo orderDetailVO = new OrderDetailVo();
         BeanUtils.copyProperties(order, orderDetailVO);
 
         // 补充演出信息

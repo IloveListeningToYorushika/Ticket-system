@@ -5,8 +5,8 @@ import com.ticket.entity.TicketType;
 import lombok.Data;
 
 @Data
-public class OrderDetailVO extends Order {
+public class OrderDetailVo extends Order {
     private TicketType ticketType;
 }
 
-//该类用于接口参数和返回结果的封装
+//该OrderDetailVO类用于接口参数和返回结果的封装

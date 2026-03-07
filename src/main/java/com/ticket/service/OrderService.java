@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ticket.dto.OrderCancelDTO;
 import com.ticket.dto.OrderListDTO;
 import com.ticket.entity.Order;
-import com.ticket.vo.OrderDetailVO;
+import com.ticket.vo.OrderDetailVo;
 
 public interface OrderService extends IService<Order> {
 
@@ -13,7 +13,7 @@ public interface OrderService extends IService<Order> {
 
     Page<OrderListDTO> getOrderListDTO(Long userId, Integer page, Integer size);
 
-    OrderDetailVO getOrderDetail(Long userId, Long orderId);
+    OrderDetailVo getOrderDetail(Long userId, Long orderId);
 
     void cancelOrder(Long userId, Long orderId);
 

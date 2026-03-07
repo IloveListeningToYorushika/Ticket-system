@@ -12,18 +12,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private JwtInterceptor jwtInterceptor;
-    
+
     @Autowired
     private UserContextInterceptor userContextInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // JWT认证拦截器 - 处理认证逻辑
+        // JWT 认证拦截器 - 先执行，处理认证逻辑
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/**");
-                
-        // 用户上下文拦截器 - 设置线程上下文
+
+        // 用户上下文拦截器 - 后执行，设置线程上下文
         registry.addInterceptor(userContextInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/**");
